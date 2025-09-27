@@ -11,7 +11,7 @@ namespace Tour.Startup
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Stakeholder API",
+                    Title = "Tour API",
                     Version = "v1"
                 });
                 var jwtSecurityScheme = new OpenApiSecurityScheme

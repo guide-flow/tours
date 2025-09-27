@@ -21,6 +21,12 @@ namespace Tour.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTour([FromBody] TourDto tourDto)
         {
+            var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(authorId))
+            {
+                return Unauthorized();
+            }
+            tourDto.AuthorId = authorId;   
             var createdTour = await _tourService.CreateTourAsync(tourDto);
             return Ok(createdTour);
         }
@@ -54,6 +60,12 @@ namespace Tour.Controllers
         {
             try
             {
+                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(authorId))
+                {
+                    return Unauthorized();
+                }
+                tourDto.AuthorId = authorId;
                 var updatedTour = await _tourService.UpdateTourAsync(id, tourDto);
                 return Ok(updatedTour);
             }
