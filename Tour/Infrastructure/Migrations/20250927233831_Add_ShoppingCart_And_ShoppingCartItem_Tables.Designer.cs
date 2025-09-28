@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ToursContext))]
-    partial class ToursContextModelSnapshot : ModelSnapshot
+    [Migration("20250927233831_Add_ShoppingCart_And_ShoppingCartItem_Tables")]
+    partial class Add_ShoppingCart_And_ShoppingCartItem_Tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,8 +129,8 @@ namespace Infrastructure.Migrations
                     b.Property<long>("ShoppingCartId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("TourId")
-                        .HasColumnType("integer");
+                    b.Property<long>("TourId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TourName")
                         .IsRequired()
