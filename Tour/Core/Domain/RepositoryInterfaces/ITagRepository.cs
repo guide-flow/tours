@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace API.Dtos
+namespace Core.Domain.RepositoryInterfaces
 {
-    public class TagDto
+    public interface ITagRepository
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        Task<Tag?> GetByNameAsync(string name);
     }
 }
