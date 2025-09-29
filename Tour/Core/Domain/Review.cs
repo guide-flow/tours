@@ -1,9 +1,6 @@
-﻿using Common.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using API.Dtos;
+using Common.Enums;
 
 namespace Core.Domain
 {
@@ -18,5 +15,25 @@ namespace Core.Domain
         public string? ImageUrl { get; set; }
         public int TourId { get; set; }
         public Tour Tour { get; set; } = default!;
+
+        public static ReviewDto Create(
+            string touristId,
+            int tourId,
+            Rating rating,
+            string comment,
+            DateTime visitedAt,
+            string? imageUrl = null)
+        {
+            return new ReviewDto
+            {
+                TouristId = touristId,
+                TourId = tourId,
+                Rating = rating,
+                Comment = comment,
+                VisitedAt = visitedAt,
+                ImageUrl = imageUrl,
+                CreatedAt = DateTime.UtcNow
+            };
+        }
     }
 }

@@ -35,6 +35,19 @@ namespace Infrastructure.Database
                 .HasMany(t => t.Tags)
                 .WithMany(tag => tag.Tours)
                 .UsingEntity(j => j.ToTable("TourTags"));
+
+            modelBuilder.Entity<Review>(entity =>
+            {
+                entity.Property(r => r.Comment)
+                      .IsRequired()
+                      .HasMaxLength(1000);
+
+                entity.Property(r => r.CreatedAt)
+                      .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(r => r.Rating)
+                      .IsRequired();
+            });
         }
     }
 }

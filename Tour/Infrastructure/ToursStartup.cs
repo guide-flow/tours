@@ -23,11 +23,13 @@ namespace Infrastructure
         private static void SetupCore(IServiceCollection services)
         {
             services.AddScoped<ITourService,TourService>();
+            services.AddScoped<IReviewService,ReviewService>();
         }
 
         private static void SetupInfrastructure(IServiceCollection services)
         {
             services.AddScoped(typeof(ITourRepository), typeof(TourRepository));
+            services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
 
             services.AddDbContext<ToursContext>(opt =>
                 opt.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
