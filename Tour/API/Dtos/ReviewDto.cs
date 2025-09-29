@@ -17,6 +17,5 @@ namespace API.Dtos
         public string TouristId { get; set; }
         public string? ImageUrl { get; set; }
         public int TourId { get; set; }
-        public TourDto Tour { get; set; }
     }
 }

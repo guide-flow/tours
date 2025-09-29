@@ -14,7 +14,7 @@ namespace API.Dtos
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ImageBase64 { get; set; }
         public int TourId { get; set; }
-        public TourDto TourDto { get; set; } = default!;
     }
 }

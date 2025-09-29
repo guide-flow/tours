@@ -25,12 +25,16 @@ namespace Infrastructure.Database.Repositories
 
         public async Task<Tour> GetByIdAsync(int id)
         {
-            return await _context.Tours.FindAsync(id) ?? throw new KeyNotFoundException($"Tour with id {id} not found.");
+            return await _context.Tours.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id) ?? throw new KeyNotFoundException($"Tour with id {id} not found.");
+        }
+
+        public async Task<Tour> GetByIdWithCheckpoints(int id) { 
+            return await _context.Tours.Include(t => t.Checkpoints).Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id) ?? throw new KeyNotFoundException($"Tour with id {id} not found.");
         }
 
         public async Task<IEnumerable<Tour>> GetByAuthorAsync(string authorId)
         {
-            return await _context.Tours.Where(t => t.AuthorId == authorId).ToListAsync();
+            return await _context.Tours.Include(t => t.Tags).Where(t => t.AuthorId == authorId).ToListAsync();
         }
 
         public async Task UpdateAsync(Tour tour)
