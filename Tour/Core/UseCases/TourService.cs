@@ -14,18 +14,37 @@ namespace Core.UseCases
     public class TourService : ITourService
     {
         private readonly ITourRepository _tourRepository;
+        private readonly ITagRepository _tagRepository;
         private readonly IMapper _mapper;
 
-        public TourService(ITourRepository tourRepository, IMapper mapper)
+        public TourService(ITourRepository tourRepository, IMapper mapper, ITagRepository tagRepository)
         {
             _tourRepository = tourRepository;
             _mapper = mapper;
+            _tagRepository = tagRepository;
         }
         public async Task<TourDto> CreateTourAsync(TourDto tourDto)
         {
             var tour = _mapper.Map<Tour>(tourDto);
+
+            var finalTags = new List<Tag>();
+            foreach (var tag in tour.Tags)
+            {
+                var existing = await _tagRepository.GetByNameAsync(tag.Name);
+
+                if (existing != null)
+                {
+                    finalTags.Add(existing);
+                }
+                else
+                {
+                    finalTags.Add(tag);
+                }
+            }
+
+            tour.Tags = finalTags;
+
             await _tourRepository.AddAsync(tour);
-            
             return _mapper.Map<TourDto>(tour);
         }
 

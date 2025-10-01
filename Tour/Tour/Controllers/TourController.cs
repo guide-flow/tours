@@ -35,24 +35,38 @@ namespace Tour.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTourById(int id)
         {
-            var tour = await _tourService.GetTourByIdAsync(id);
-            if (tour == null)
+            try
             {
-                return NotFound();
+                var tour = await _tourService.GetTourByIdAsync(id);
+                if (tour == null)
+                {
+                    return NotFound();
+                }
+                return Ok(tour);
             }
-            return Ok(tour);
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
         [Authorize]
         [HttpGet("author")]
         public async Task<IActionResult> GetToursByAuthor()
         {
-            var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(authorId))
+            try
             {
-                return Unauthorized();
+                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(authorId))
+                {
+                    return Unauthorized();
+                }
+                var tours = await _tourService.GetToursByAuthorAsync(authorId);
+                return Ok(tours);
             }
-            var tours = await _tourService.GetToursByAuthorAsync(authorId);
-            return Ok(tours);
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
         [Authorize]
         [HttpPut("{id}")]

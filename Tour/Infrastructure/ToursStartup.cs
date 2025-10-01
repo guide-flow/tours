@@ -25,6 +25,7 @@ namespace Infrastructure
             services.AddScoped<ITourService,TourService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<ICheckpointService, CheckpointService>();    
         }
 
         private static void SetupInfrastructure(IServiceCollection services)
@@ -32,6 +33,8 @@ namespace Infrastructure
             services.AddScoped(typeof(ITourRepository), typeof(TourRepository));
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped(typeof(ICheckpointRepository), typeof(CheckpointRepository));
+            services.AddScoped(typeof(ITagRepository), typeof(TagRepository));
 
             services.AddDbContext<ToursContext>(opt =>
                 opt.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
