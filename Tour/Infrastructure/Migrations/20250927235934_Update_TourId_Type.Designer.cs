@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ToursContext))]
-    partial class ToursContextModelSnapshot : ModelSnapshot
+    [Migration("20250927235934_Update_TourId_Type")]
+    partial class Update_TourId_Type
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,31 +141,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.HasIndex("TourId");
-
                     b.ToTable("ShoppingCartItems", "tours");
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.TourPurchaseToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("TourPurchaseTokens", "tours");
                 });
 
             modelBuilder.Entity("Core.Domain.Tag", b =>
@@ -260,25 +239,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Core.Domain.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.TourPurchaseToken", b =>
-                {
-                    b.HasOne("Core.Domain.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
                 });
 
             modelBuilder.Entity("TagTour", b =>

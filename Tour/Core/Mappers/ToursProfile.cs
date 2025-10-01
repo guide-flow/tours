@@ -1,11 +1,8 @@
 ﻿using API.Dtos;
+using API.Dtos.Shopping;
 using AutoMapper;
 using Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Core.Domain.Shopping;
 
 namespace Core.Mappers
 {
@@ -17,6 +14,10 @@ namespace Core.Mappers
             CreateMap<Tag, TagDto>().ReverseMap();
             CreateMap<Review, ReviewDto>().ReverseMap();
             CreateMap<Checkpoint, CheckpointDto>().ReverseMap();
+            CreateMap<ShoppingCartItemCreationDto, ShoppingCartItem>();
+            CreateMap<ShoppingCartItem, ShoppingCartItemDto>();
+            CreateMap<ShoppingCart, ShoppingCartDto>().ReverseMap();
+            CreateMap<TourPurchaseToken, TourPurchaseTokenDto>();
         }
     }
 }

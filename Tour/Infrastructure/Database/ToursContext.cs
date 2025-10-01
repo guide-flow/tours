@@ -1,10 +1,6 @@
 ﻿using Core.Domain;
+using Core.Domain.Shopping;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Database
 {
@@ -14,6 +10,9 @@ namespace Infrastructure.Database
         public DbSet<Checkpoint> Checkpoints { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
         public ToursContext(DbContextOptions<ToursContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +34,10 @@ namespace Infrastructure.Database
                 .HasMany(t => t.Tags)
                 .WithMany(tag => tag.Tours)
                 .UsingEntity(j => j.ToTable("TourTags"));
+
+            modelBuilder.Entity<TourPurchaseToken>()
+                .HasIndex(token => new { token.TourId, token.UserId })
+                .IsUnique();
         }
     }
 }
