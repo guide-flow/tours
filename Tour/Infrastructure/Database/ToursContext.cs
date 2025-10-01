@@ -12,6 +12,7 @@ namespace Infrastructure.Database
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<TourPurchaseToken> TourPurchaseTokens { get; set; }
         public ToursContext(DbContextOptions<ToursContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +34,10 @@ namespace Infrastructure.Database
                 .HasMany(t => t.Tags)
                 .WithMany(tag => tag.Tours)
                 .UsingEntity(j => j.ToTable("TourTags"));
+
+            modelBuilder.Entity<TourPurchaseToken>()
+                .HasIndex(token => new { token.TourId, token.UserId })
+                .IsUnique();
         }
     }
 }

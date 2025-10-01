@@ -10,6 +10,8 @@ public class ShoppingCartItem
 
     public int TourId { get; init; }
 
+    public Tour? Tour { get; private set; } = null;
+
     [Required]
     [MaxLength(200)]
     public string TourName { get; private set; } = string.Empty;

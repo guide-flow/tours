@@ -8,6 +8,8 @@ public class ShoppingCart
 
     public long UserId { get; init; }
 
+    public decimal TotalPrice => items.Sum(i => i.Price);
+
     public IReadOnlyCollection<ShoppingCartItem> Items => [.. items];
 
     public void AddToCart(ShoppingCartItem item)
@@ -16,5 +18,19 @@ public class ShoppingCart
             throw new InvalidOperationException("Item already in cart");
 
         items.Add(item);
+    }
+
+    public void RemoveFromCart(int tourId)
+    {
+        var item = items.FirstOrDefault(i => i.TourId == tourId);
+        if (item is null)
+            throw new InvalidOperationException("Item not found in cart");
+
+        items.Remove(item);
+    }
+
+    public void EmptyCart()
+    {
+        items.Clear();
     }
 }

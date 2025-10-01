@@ -25,4 +25,14 @@ public class ShoppingCartController : ControllerBase
 
         return Ok(result.Value);
     }
+
+    [HttpDelete("{tourId:int:min(1)}")]
+    public async Task<IActionResult> RemoveFromCart([FromRoute] int tourId)
+    {
+        var result = await shoppingCartService.RemoveFromCartAsync(tourId, 1); // TODO: Replace 1 with actual user id from auth context
+        if (result.IsFailed)
+            return BadRequest(result.Errors);
+
+        return NoContent();
+    }
 }

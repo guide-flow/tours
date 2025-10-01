@@ -16,6 +16,8 @@ namespace Core.Mappers
             CreateMap<Checkpoint, CheckpointDto>().ReverseMap();
             CreateMap<ShoppingCartItemCreationDto, ShoppingCartItem>();
             CreateMap<ShoppingCartItem, ShoppingCartItemDto>();
+            CreateMap<ShoppingCart, ShoppingCartDto>().ReverseMap();
+            CreateMap<TourPurchaseToken, TourPurchaseTokenDto>();
         }
     }
 }
