@@ -37,7 +37,7 @@ namespace Infrastructure
             services.AddScoped(typeof(ITagRepository), typeof(TagRepository));
 
             services.AddDbContext<ToursContext>(opt =>
-                opt.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
+                opt.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TOUR"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
         }
     }
 }
