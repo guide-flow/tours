@@ -88,5 +88,47 @@ namespace Tour.Controllers
                 return NotFound();
             }
         }
+
+        [Authorize]
+        [HttpPut("tour-metrics/{id}")]
+        public async Task<IActionResult> UpdateTourMetrics(int id, [FromBody] TourMetricsDto tourMetrics)
+        {
+            try
+            {
+                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(authorId))
+                {
+                    return Unauthorized();
+                }
+                var updatedTour = await _tourService.UpdateTourMetrics(id, tourMetrics);
+                return Ok(updatedTour);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize]
+        [HttpPut("tour-status/{id}")]
+        public async Task<IActionResult> UpdateTourStatus(int id)
+        {
+            try
+            {
+                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(authorId))
+                {
+                    return Unauthorized();
+                }
+                var updatedTour = await _tourService.UpdateTourStatus(id);
+                return Ok(updatedTour);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+
     }
 }

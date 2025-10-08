@@ -15,8 +15,10 @@ namespace Core.Domain
         public Difficulty Difficulty { get; set; }
         public decimal Price { get; set; }
         public TourStatus Status { get; set; } = TourStatus.Draft;
+        public DateTime? StatusChangeDate { get; set; }
         public string AuthorId { get; set; } = default!;
-
+        public double LengthInKm { get; set; }
+        public ICollection<TransportDuration> TransportDurations { get; set; } = new List<TransportDuration>();
         public ICollection<Checkpoint> Checkpoints { get; set; } = new List<Checkpoint>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();

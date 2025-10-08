@@ -21,6 +21,8 @@ namespace Infrastructure.Database
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("tours");
 
+            modelBuilder.Entity<Tour>().Property(tour => tour.StatusChangeDate).IsRequired(false).HasDefaultValue(null);
+
             modelBuilder.Entity<Tour>()
                 .HasMany(t => t.Checkpoints)
                 .WithOne(c => c.Tour)
@@ -35,6 +37,8 @@ namespace Infrastructure.Database
                 .HasMany(t => t.Tags)
                 .WithMany(tag => tag.Tours)
                 .UsingEntity(j => j.ToTable("TourTags"));
+
+            modelBuilder.Entity<Tour>().Property(tour => tour.TransportDurations).HasColumnType("jsonb");
         }
     }
 }

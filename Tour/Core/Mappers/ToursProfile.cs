@@ -17,6 +17,7 @@ namespace Core.Mappers
             CreateMap<Tag, TagDto>().ReverseMap();
             CreateMap<Review, ReviewDto>().ReverseMap();
             CreateMap<Checkpoint, CheckpointDto>().ReverseMap();
+            CreateMap<TransportDuration, TransportDurationDto>().ReverseMap();  
         }
     }
 }

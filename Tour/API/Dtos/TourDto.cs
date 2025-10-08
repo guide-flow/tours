@@ -15,7 +15,10 @@ namespace API.Dtos
         public Difficulty Difficulty { get; set; }
         public decimal Price { get; set; } = 0;
         public TourStatus TourStatus { get; set; } = TourStatus.Draft;
+        public DateTime? StatusChangeDate {  get; set; } 
         public string? AuthorId { get; set; }
+        public double LengthInKm { get; set; } = 0;
+        public ICollection<TransportDurationDto> TransportDurations { get; set; } = new List<TransportDurationDto>();
         public ICollection<CheckpointDto>? Checkpoints { get; set; } = new List<CheckpointDto>();
         public ICollection<ReviewDto>? Reviews { get; set; } = new List<ReviewDto>();
         public ICollection<TagDto> Tags { get; set; } = new List<TagDto>();
