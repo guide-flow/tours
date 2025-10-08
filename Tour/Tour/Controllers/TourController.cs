@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace Tour.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/tours")]
     public class TourController : ControllerBase
     {
         private readonly ITourService _tourService;
@@ -17,16 +17,16 @@ namespace Tour.Controllers
             _tourService = tourService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateTour([FromBody] TourDto tourDto)
         {
-            var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(authorId))
-            {
-                return Unauthorized();
-            }
-            tourDto.AuthorId = authorId;   
+            //var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //if (string.IsNullOrEmpty(authorId))
+            //{
+            //    return Unauthorized();
+            //}
+            tourDto.AuthorId = "1";   
             var createdTour = await _tourService.CreateTourAsync(tourDto);
             return Ok(createdTour);
         }

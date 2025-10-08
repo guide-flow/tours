@@ -29,6 +29,8 @@ app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
+app.UseCors("_allowDevClients");
+
 app.UseAuthorization();
 
 app.MapControllers();

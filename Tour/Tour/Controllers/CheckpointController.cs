@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Tour.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/checkpoints")]
     public class CheckpointController : ControllerBase
     {
         private readonly ICheckpointService _checkpointService;
