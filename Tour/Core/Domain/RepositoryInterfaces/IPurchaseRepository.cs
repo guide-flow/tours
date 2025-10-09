@@ -9,4 +9,6 @@ public interface IPurchaseRepository
     Task CreateBatchAsync(IEnumerable<TourPurchaseToken> tokens);
 
     Task SaveChangesAsync();
+
+    Task<TourPurchaseToken?> GetByIdAsync(long id);
 }
