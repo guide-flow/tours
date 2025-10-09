@@ -28,4 +28,9 @@ public class PurchaseRepository : IPurchaseRepository
     {
         await context.SaveChangesAsync();
     }
+
+    public async Task<TourPurchaseToken?> GetByIdAsync(long id)
+    {
+        return await context.TourPurchaseTokens.FirstOrDefaultAsync(t => t.Id == id);
+    }
 }

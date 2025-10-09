@@ -35,6 +35,7 @@ namespace Infrastructure
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
             services.AddScoped(typeof(ICheckpointRepository), typeof(CheckpointRepository));
             services.AddScoped(typeof(ITagRepository), typeof(TagRepository));
+            services.AddSingleton<IPurchaseMemoryStore, PurchaseMemoryStore>();
 
             services.AddDbContext<ToursContext>(opt =>
                 opt.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TOUR"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
