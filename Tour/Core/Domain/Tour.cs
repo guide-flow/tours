@@ -14,7 +14,7 @@ namespace Core.Domain
         public string Description { get; set; } = default!;
         public Difficulty Difficulty { get; set; }
         public decimal Price { get; set; }
-        public TourStatus Status { get; set; } = TourStatus.Draft;
+        public TourStatus Status { get; set; }
         public DateTime? StatusChangeDate { get; set; }
         public string AuthorId { get; set; } = default!;
         public double LengthInKm { get; set; }

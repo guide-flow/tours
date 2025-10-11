@@ -13,11 +13,11 @@ namespace API.Dtos
         public string Title { get; set; }
         public string Description { get; set; }
         public Difficulty Difficulty { get; set; }
-        public decimal Price { get; set; } = 0;
-        public TourStatus TourStatus { get; set; } = TourStatus.Draft;
+        public decimal Price { get; set; }
+        public TourStatus Status { get; set; }
         public DateTime? StatusChangeDate {  get; set; } 
         public string? AuthorId { get; set; }
-        public double LengthInKm { get; set; } = 0;
+        public double LengthInKm { get; set; }
         public ICollection<TransportDurationDto> TransportDurations { get; set; } = new List<TransportDurationDto>();
         public ICollection<CheckpointDto>? Checkpoints { get; set; } = new List<CheckpointDto>();
         public ICollection<ReviewDto>? Reviews { get; set; } = new List<ReviewDto>();

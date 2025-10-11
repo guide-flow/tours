@@ -49,18 +49,19 @@ namespace Tour.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [Authorize]
+
+        //[Authorize]
         [HttpGet("author")]
         public async Task<IActionResult> GetToursByAuthor()
         {
             try
             {
-                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(authorId))
-                {
-                    return Unauthorized();
-                }
-                var tours = await _tourService.GetToursByAuthorAsync(authorId);
+                //var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //if (string.IsNullOrEmpty(authorId))
+                //{
+                //    return Unauthorized();
+                //}
+                var tours = await _tourService.GetToursByAuthorAsync("1");
                 return Ok(tours);
             }
             catch (Exception ex)
@@ -68,18 +69,19 @@ namespace Tour.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [Authorize]
+
+        //[Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTour(int id, [FromBody] TourDto tourDto)
         {
             try
             {
-                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(authorId))
-                {
-                    return Unauthorized();
-                }
-                tourDto.AuthorId = authorId;
+                //var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //if (string.IsNullOrEmpty(authorId))
+                //{
+                //    return Unauthorized();
+                //}
+                tourDto.AuthorId = "1";
                 var updatedTour = await _tourService.UpdateTourAsync(id, tourDto);
                 return Ok(updatedTour);
             }
@@ -89,17 +91,27 @@ namespace Tour.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTour(int id)
+        {
+            try
+            {
+                await _tourService.DeleteTourAsync(id);
+                return Ok();
+            }catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+
+        //[Authorize]
         [HttpPut("tour-metrics/{id}")]
         public async Task<IActionResult> UpdateTourMetrics(int id, [FromBody] TourMetricsDto tourMetrics)
         {
             try
             {
-                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(authorId))
-                {
-                    return Unauthorized();
-                }
                 var updatedTour = await _tourService.UpdateTourMetrics(id, tourMetrics);
                 return Ok(updatedTour);
             }
@@ -109,17 +121,12 @@ namespace Tour.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("tour-status/{id}")]
         public async Task<IActionResult> UpdateTourStatus(int id)
         {
             try
             {
-                var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(authorId))
-                {
-                    return Unauthorized();
-                }
                 var updatedTour = await _tourService.UpdateTourStatus(id);
                 return Ok(updatedTour);
             }

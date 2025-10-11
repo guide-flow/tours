@@ -36,7 +36,7 @@ public class ShoppingCartService : IShoppingCartService
         if (tour is null)
             return Result.Fail("Tour not found");
 
-        if (tour.TourStatus == TourStatus.Archived)
+        if (tour.Status == TourStatus.Archived)
             return Result.Fail("Cannot add archived tour to cart");
 
         var item = mapper.Map<ShoppingCartItem>(itemCreationDto);

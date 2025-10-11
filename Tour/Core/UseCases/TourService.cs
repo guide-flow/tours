@@ -27,6 +27,9 @@ namespace Core.UseCases
         public async Task<TourDto> CreateTourAsync(TourDto tourDto)
         {
             var tour = _mapper.Map<Tour>(tourDto);
+            tour.Status = TourStatus.Draft;
+            tour.Price = 0;
+            tour.LengthInKm = 0;
 
             var finalTags = new List<Tag>();
             foreach (var tag in tour.Tags)
@@ -73,6 +76,17 @@ namespace Core.UseCases
             return _mapper.Map<TourDto>(existingTour);
         }
 
+        public async Task DeleteTourAsync(int id)
+        {
+            var tour = _tourRepository.GetByIdAsync(id);
+            if(tour == null)
+            {
+                throw new KeyNotFoundException($"Tour with id {id} not found.");
+            }
+            await _tourRepository.DeleteAsync(id);
+            return;        
+        }
+
         public async Task<TourDto> UpdateTourMetrics(int id, TourMetricsDto tourMetricsDto)
         {
             var existingTour = await _tourRepository.GetByIdAsync(id);
@@ -94,7 +108,7 @@ namespace Core.UseCases
                 throw new KeyNotFoundException($"Tour with id {id} not found.");
             }
             existingTour.Status = GetNewTourStatus(existingTour.Status);
-            existingTour.StatusChangeDate = DateTime.Now;
+            existingTour.StatusChangeDate = DateTime.UtcNow;
             await _tourRepository.UpdateAsync(existingTour);
             return _mapper.Map<TourDto>(existingTour);
         }

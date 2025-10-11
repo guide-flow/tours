@@ -13,6 +13,7 @@ namespace API.ServiceInterfaces
         Task<TourDto> GetTourByIdAsync(int id);
         Task<IEnumerable<TourDto>> GetToursByAuthorAsync(string authorId);
         Task<TourDto> UpdateTourAsync(int id, TourDto tourDto);
+        Task DeleteTourAsync(int id);
         Task<TourDto> UpdateTourMetrics(int id, TourMetricsDto tourMetricsDto);
         Task<TourDto> UpdateTourStatus(int id);
     }
