@@ -36,6 +36,7 @@ namespace Infrastructure
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
             services.AddScoped(typeof(ICheckpointRepository), typeof(CheckpointRepository));
             services.AddScoped(typeof(ITagRepository), typeof(TagRepository));
+            services.AddSingleton<IPurchaseMemoryStore, PurchaseMemoryStore>();
 
             var conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TOUR")!;
 

@@ -1,5 +1,6 @@
 ﻿using API.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Tour.Controllers;
 
@@ -17,7 +18,11 @@ public class PurchaseController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create()
     {
-        var result = await purchaseService.CreateAsync(1); // TODO: Replace with actual user ID
+        string userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+        if (!long.TryParse(userIdStr, out long userId))
+            return BadRequest("Invalid user ID.");
+
+        var result = await purchaseService.CreateAsync(userId);
         if (result.IsFailed)
             return BadRequest(result.Errors);
 
