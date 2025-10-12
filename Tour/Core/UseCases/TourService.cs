@@ -24,12 +24,13 @@ namespace Core.UseCases
             _mapper = mapper;
             _tagRepository = tagRepository;
         }
-        public async Task<TourDto> CreateTourAsync(TourDto tourDto)
+        public async Task<TourDto> CreateTourAsync(TourDto tourDto, string authorId)
         {
             var tour = _mapper.Map<Tour>(tourDto);
             tour.Status = TourStatus.Draft;
             tour.Price = 0;
             tour.LengthInKm = 0;
+            tour.AuthorId = authorId;
 
             var finalTags = new List<Tag>();
             foreach (var tag in tour.Tags)
