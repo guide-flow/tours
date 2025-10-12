@@ -2,6 +2,8 @@
 using API.ServiceInterfaces;
 using Common.Enums;
 using Grpc.Core;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using Proto = GrpcServiceTranscoding.Tours; 
 
 namespace Tour.ProtoControllers
@@ -78,8 +80,9 @@ namespace Tour.ProtoControllers
         }
 
 
-        public override async Task<Proto.Tour> CreateTour(Proto.CreateUpdateTour request, ServerCallContext context)
+        public override async Task<Proto.Tour> CreateTour(Proto.CreateTourRequest request, ServerCallContext context)
         {
+
             var (userId, role) = GetUserFromContext(context);
             EnsureRole(role);
 
@@ -93,9 +96,50 @@ namespace Tour.ProtoControllers
                 Description = request.Description,
                 Difficulty = ToDomainDifficulty(request.Difficulty),
                 Tags = request.Tags.Select(ToDtoTag).ToList(),
-            }, userId);
+                AuthorId = userId
+            });
 
             return MapToProto(created);
+        }
+
+        public override async Task<Proto.Tour> UpdateTour(Proto.UpdateTourRequest request, ServerCallContext context)
+        {
+            try
+            {
+                var (userId, role) = GetUserFromContext(context);
+                EnsureRole(role);
+
+                _logger.LogInformation("CreateTour by {UserId} ({Role})", userId, role);
+
+                _logger.LogInformation($"Tags for tour {request.Tags.Select(ToDtoTag).ToList()}");
+
+                var created = await _tourService.UpdateTourAsync(request.Id, new TourDto
+                {
+                    Id = request.Id,
+                    Title = request.Title,
+                    Description = request.Description,
+                    Difficulty = ToDomainDifficulty(request.Difficulty),
+                    Tags = request.Tags.Select(ToDtoTag).ToList(),
+                    AuthorId = userId,
+                });
+
+                return MapToProto(created);
+            }
+            catch (ValidationException ex)
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message));
+            }
+            catch (DbUpdateException ex)
+            {
+                var root = ex.GetBaseException()?.Message ?? ex.Message;
+                _logger.LogError(ex, "DB error on UpdateTour. Root: {Root}", root);
+
+                throw new RpcException(new Status(StatusCode.FailedPrecondition, $"Database error: {root}"));
+            }
+            catch (Exception ex)
+            {
+                throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+            }
         }
 
     }

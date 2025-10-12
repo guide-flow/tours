@@ -4,16 +4,28 @@ package Tours;
 option csharp_namespace = "GrpcServiceTranscoding.Tours";
 
 service ToursService {
-  rpc CreateTour(CreateUpdateTour) returns (Tour) {
+  rpc CreateTour(CreateTourRequest) returns (Tour) {
+  }
+  rpc UpdateTour(UpdateTourRequest) returns (Tour) {
   }
 }
 
-message CreateUpdateTour {            
+message CreateTourRequest {
   string title = 1;             
   string description = 2;       
   TourDifficulty difficulty = 3;
-  repeated Tag tags = 4;        
+  repeated Tag tags = 4;       
+  string author_id = 5;
 }
+
+message UpdateTourRequest {
+  int32 id = 1;                   
+  string title = 2;
+  string description = 3;
+  TourDifficulty difficulty = 4;
+  repeated Tag tags = 5;        
+  string author_id = 6;
+ }
 
 message Tag {
   int32 id = 1;
