@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using Tour.Authorization;
 
 namespace Tour.Startup
 {
@@ -28,11 +30,14 @@ namespace Tour.Startup
                     };
                 });
 
+            services.AddAuthentication("HeaderAuth")
+                .AddScheme<AuthenticationSchemeOptions, HeaderAuthenticationHandler>("HeaderAuth", null);
+
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("administratorPolicy", policy => policy.RequireRole("admin"));
-                options.AddPolicy("touristPolicy", policy => policy.RequireRole("tourist"));
-                options.AddPolicy("authorPolicy", policy => policy.RequireRole("author"));
+                options.AddPolicy("administratorPolicy", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("touristPolicy", policy => policy.RequireRole("Tourist"));
+                options.AddPolicy("authorPolicy", policy => policy.RequireRole("Author"));
             });
             return services;
         }

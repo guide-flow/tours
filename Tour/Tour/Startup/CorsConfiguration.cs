@@ -9,7 +9,7 @@
             {
                 options.AddPolicy(_corsPolicyName, builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
+                    builder.AllowAnyOrigin()
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
