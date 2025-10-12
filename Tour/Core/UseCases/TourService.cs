@@ -24,13 +24,12 @@ namespace Core.UseCases
             _mapper = mapper;
             _tagRepository = tagRepository;
         }
-        public async Task<TourDto> CreateTourAsync(TourDto tourDto, string authorId)
+        public async Task<TourDto> CreateTourAsync(TourDto tourDto)
         {
             var tour = _mapper.Map<Tour>(tourDto);
             tour.Status = TourStatus.Draft;
             tour.Price = 0;
             tour.LengthInKm = 0;
-            tour.AuthorId = authorId;
 
             var finalTags = new List<Tag>();
             foreach (var tag in tour.Tags)
@@ -65,13 +64,13 @@ namespace Core.UseCases
             return _mapper.Map<IEnumerable<TourDto>>(tours);
         }
 
-        public async Task<TourDto> UpdateTourAsync(int id, TourDto tourDto)
+        public async Task<TourDto> UpdateTourAsync(int id,TourDto tourDto)
         {
             var existingTour = await _tourRepository.GetByIdAsync(id);
             if (existingTour == null)
             {
                 throw new KeyNotFoundException($"Tour with id {id} not found.");
-            }
+            }   
             _mapper.Map(tourDto, existingTour);
             await _tourRepository.UpdateAsync(existingTour);
             return _mapper.Map<TourDto>(existingTour);

@@ -9,7 +9,7 @@ namespace API.ServiceInterfaces
 {
     public interface ITourService
     {
-        Task<TourDto> CreateTourAsync(TourDto tourDto, string authorId);
+        Task<TourDto> CreateTourAsync(TourDto tourDto);
         Task<TourDto> GetTourByIdAsync(int id);
         Task<IEnumerable<TourDto>> GetToursByAuthorAsync(string authorId);
         Task<TourDto> UpdateTourAsync(int id, TourDto tourDto);

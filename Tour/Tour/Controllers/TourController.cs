@@ -27,7 +27,7 @@ namespace Tour.Controllers
             //    return Unauthorized();
             //}
             tourDto.AuthorId = "1";   
-            var createdTour = await _tourService.CreateTourAsync(tourDto,"1");
+            var createdTour = await _tourService.CreateTourAsync(tourDto);
             return Ok(createdTour);
         }
 
