@@ -25,7 +25,7 @@ namespace Infrastructure.Database.Repositories
 
         public async Task<Tour> GetByIdAsync(int id)
         {
-            return await _context.Tours.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == id) ?? throw new KeyNotFoundException($"Tour with id {id} not found.");
+            return await _context.Tours.FirstOrDefaultAsync(t => t.Id == id) ?? throw new KeyNotFoundException($"Tour with id {id} not found.");
         }
 
         public async Task<Tour> GetByIdWithCheckpoints(int id) { 

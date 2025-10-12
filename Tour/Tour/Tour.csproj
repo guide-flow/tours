@@ -35,6 +35,7 @@
 		<Folder Include="wwwroot\images\checkpoints\" />
 		<Folder Include="wwwroot\images\reviews\" />
 		<Protobuf Include="Protos\tours.proto" />
+		<Protobuf Include="Protos\shopping-cart.proto" />
 	</ItemGroup>
 
 </Project>

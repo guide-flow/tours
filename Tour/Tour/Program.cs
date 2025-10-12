@@ -76,6 +76,8 @@ app.MapControllers();
 
 app.MapGrpcService<TourProtoController>();
 
+app.MapGrpcService<ShoppingCartProtoController>();
+
 app.ApplyMigrations();
 
 app.Run();
