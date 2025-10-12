@@ -18,7 +18,12 @@ public class ShoppingCartProtoController : ShoppingCartService.ShoppingCartServi
 
     public override async Task<ShoppingCartItem> AddToCart(ItemCreation request, ServerCallContext context)
     {
-        var result = await cartService.AddToCartAsync(new ItemCreationDto(request.TourId, request.TourName, (decimal)request.Price), 1);
+        var httpCtx = context.GetHttpContext();
+        string userIdStr = httpCtx?.Request?.Headers["X-User-Id"] ?? throw new RpcException(new Status(StatusCode.Unauthenticated, "Missing X-User-Id header."));
+        if (!long.TryParse(userIdStr, out long userId))
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid user ID."));
+
+        var result = await cartService.AddToCartAsync(new ItemCreationDto(request.TourId, request.TourName, (decimal)request.Price), userId);
         if (result.IsFailed)
             throw new RpcException(new Status(StatusCode.InvalidArgument, string.Join("; ", result.Errors)));
 
@@ -37,7 +42,12 @@ public class ShoppingCartProtoController : ShoppingCartService.ShoppingCartServi
 
     public override async Task<Empty> RemoveFromCart(ShoppingCartItemId request, ServerCallContext context)
     {
-        var result = await cartService.RemoveFromCartAsync(request.TourId, 1);
+        var httpCtx = context.GetHttpContext();
+        string userIdStr = httpCtx?.Request?.Headers["X-User-Id"] ?? throw new RpcException(new Status(StatusCode.Unauthenticated, "Missing X-User-Id header."));
+        if (!long.TryParse(userIdStr, out long userId))
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid user ID."));
+
+        var result = await cartService.RemoveFromCartAsync(request.TourId, userId);
         if (result.IsFailed)
             throw new RpcException(new Status(StatusCode.InvalidArgument, string.Join("; ", result.Errors)));
 
