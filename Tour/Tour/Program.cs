@@ -66,7 +66,7 @@ purchaseSagaHandler.Subscribe();
 
 app.UseStaticFiles();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("_allowDevClients");
 
@@ -77,5 +77,7 @@ app.MapControllers();
 app.MapGrpcService<TourProtoController>();
 
 app.ApplyMigrations();
+
+app.MapGet("/health", () => Results.Ok("OK"));
 
 app.Run();

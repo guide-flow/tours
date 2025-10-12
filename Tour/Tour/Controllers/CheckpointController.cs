@@ -16,7 +16,7 @@ namespace Tour.Controllers
             _checkpointService = checkpointService;
         }
 
-        //[Authorize]
+        [Authorize(Policy = "authorPolicy")]
         [HttpPost]
         public async Task<IActionResult> CreateCheckpoint([FromBody] CheckpointDto checkpointDto)
         {
@@ -35,7 +35,7 @@ namespace Tour.Controllers
             return Ok(createdCheckpoint);
         }
 
-        //[Authorize]
+        [Authorize(Policy = "authorPolicy")]
         [HttpGet("tour-checkpoints/{tourId:int}")]
         public async Task<IActionResult> GetTourCheckpoints(int tourId)
         {
@@ -43,7 +43,7 @@ namespace Tour.Controllers
             return Ok(checkpoints);
         }
 
-        //[Authorize]
+        [Authorize(Policy = "authorPolicy")]
         [HttpGet("checkpoint/{checkpointId:int}")]
         public async Task<IActionResult> GetCheckpoint(int checkpointId)
         {
@@ -51,7 +51,7 @@ namespace Tour.Controllers
             return Ok(checkpoints);
         }
 
-        //[Authorize]
+        [Authorize(Policy = "authorPolicy")]
         [HttpDelete("{checkpointId:int}")]
         public async Task<IActionResult> DeleteCheckpoint(int checkpointId)
         {
@@ -67,7 +67,7 @@ namespace Tour.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize(Policy = "authorPolicy")]
         [HttpPut]
         public async Task<IActionResult> UpdateCheckpoint([FromBody] CheckpointDto checkpointDto)
         {
