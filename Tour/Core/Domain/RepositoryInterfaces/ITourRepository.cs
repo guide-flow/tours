@@ -12,6 +12,7 @@ namespace Core.Domain.RepositoryInterfaces
         Task<IEnumerable<Tour>> GetByAuthorAsync(string authorId);
         Task AddAsync(Tour tour);
         Task UpdateAsync(Tour tour);
+        Task DeleteAsync(int id);
         Task<Tour> GetByIdWithCheckpoints(int id);
 
     }

@@ -1,6 +1,7 @@
 ﻿using API.Dtos;
 using API.ServiceInterfaces;
 using AutoMapper;
+using Common.Enums;
 using Core.Domain;
 using Core.Domain.RepositoryInterfaces;
 using System;
@@ -23,9 +24,13 @@ namespace Core.UseCases
             _mapper = mapper;
             _tagRepository = tagRepository;
         }
-        public async Task<TourDto> CreateTourAsync(TourDto tourDto)
+        public async Task<TourDto> CreateTourAsync(TourDto tourDto, string authorId)
         {
             var tour = _mapper.Map<Tour>(tourDto);
+            tour.Status = TourStatus.Draft;
+            tour.Price = 0;
+            tour.LengthInKm = 0;
+            tour.AuthorId = authorId;
 
             var finalTags = new List<Tag>();
             foreach (var tag in tour.Tags)
@@ -70,6 +75,54 @@ namespace Core.UseCases
             _mapper.Map(tourDto, existingTour);
             await _tourRepository.UpdateAsync(existingTour);
             return _mapper.Map<TourDto>(existingTour);
+        }
+
+        public async Task DeleteTourAsync(int id)
+        {
+            var tour = _tourRepository.GetByIdAsync(id);
+            if(tour == null)
+            {
+                throw new KeyNotFoundException($"Tour with id {id} not found.");
+            }
+            await _tourRepository.DeleteAsync(id);
+            return;        
+        }
+
+        public async Task<TourDto> UpdateTourMetrics(int id, TourMetricsDto tourMetricsDto)
+        {
+            var existingTour = await _tourRepository.GetByIdAsync(id);
+            if (existingTour == null)
+            {
+                throw new KeyNotFoundException($"Tour with id {id} not found.");
+            }
+            existingTour.LengthInKm = tourMetricsDto.LengthInKm;
+            existingTour.TransportDurations = tourMetricsDto.TransportDurations.Select(_mapper.Map<TransportDuration>).ToList();
+            await _tourRepository.UpdateAsync(existingTour);
+            return _mapper.Map<TourDto>(existingTour);
+        }
+
+        public async Task<TourDto> UpdateTourStatus(int id)
+        {
+            var existingTour = await _tourRepository.GetByIdAsync(id);
+            if (existingTour == null)
+            {
+                throw new KeyNotFoundException($"Tour with id {id} not found.");
+            }
+            existingTour.Status = GetNewTourStatus(existingTour.Status);
+            existingTour.StatusChangeDate = DateTime.UtcNow;
+            await _tourRepository.UpdateAsync(existingTour);
+            return _mapper.Map<TourDto>(existingTour);
+        }
+
+        private TourStatus GetNewTourStatus(TourStatus status)
+        {
+            switch(status)
+            {
+                case TourStatus.Draft: return TourStatus.Published;
+                case TourStatus.Published: return TourStatus.Archived;
+                case TourStatus.Archived: return TourStatus.Published;
+                default: return TourStatus.Draft;
+            }
         }
     }
 }

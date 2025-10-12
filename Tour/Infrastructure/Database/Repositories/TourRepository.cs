@@ -42,5 +42,16 @@ namespace Infrastructure.Database.Repositories
             _context.Tours.Update(tour);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var tour = await _context.Tours.FindAsync(id);
+            if (tour == null)
+            {
+                throw new KeyNotFoundException($"Tour with id {id} not found.");
+            }
+            _context.Tours.Remove(tour);
+            await _context.SaveChangesAsync();
+        }
     }
 }

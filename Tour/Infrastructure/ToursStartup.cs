@@ -6,6 +6,7 @@ using Infrastructure.Database;
 using Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
 namespace Infrastructure
 {
@@ -37,8 +38,18 @@ namespace Infrastructure
             services.AddScoped(typeof(ITagRepository), typeof(TagRepository));
             services.AddSingleton<IPurchaseMemoryStore, PurchaseMemoryStore>();
 
+            var conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TOUR")!;
+
+            var dsBuilder = new NpgsqlDataSourceBuilder(conn);
+            dsBuilder.EnableDynamicJson();
+            var dataSource = dsBuilder.Build();
+
             services.AddDbContext<ToursContext>(opt =>
-                opt.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_TOUR"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")));
+                opt.UseNpgsql(
+                    dataSource,
+                    x => x.MigrationsHistoryTable("__EFMigrationsHistory", "tours")
+                )
+            );
         }
     }
 }

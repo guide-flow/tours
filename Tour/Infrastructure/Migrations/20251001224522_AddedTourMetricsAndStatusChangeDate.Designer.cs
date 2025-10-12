@@ -5,6 +5,7 @@ using Core.Domain;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -13,9 +14,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ToursContext))]
-    partial class ToursContextModelSnapshot : ModelSnapshot
+    [Migration("20251001224522_AddedTourMetricsAndStatusChangeDate")]
+    partial class AddedTourMetricsAndStatusChangeDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,88 +99,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("TourId");
 
                     b.ToTable("Reviews", "tours");
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.ShoppingCart", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ShoppingCarts", "tours");
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.ShoppingCartItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.Property<long>("ShoppingCartId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TourName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("ShoppingCartItems", "tours");
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.TourPurchaseToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<bool>("FollowerValidated")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IdentityValidated")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("RejectReason")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("TourPurchaseTokens", "tours");
                 });
 
             modelBuilder.Entity("Core.Domain.Tag", b =>
@@ -278,34 +199,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tour");
                 });
 
-            modelBuilder.Entity("Core.Domain.Shopping.ShoppingCartItem", b =>
-                {
-                    b.HasOne("Core.Domain.Shopping.ShoppingCart", null)
-                        .WithMany("Items")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Domain.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.TourPurchaseToken", b =>
-                {
-                    b.HasOne("Core.Domain.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
-                });
-
             modelBuilder.Entity("TagTour", b =>
                 {
                     b.HasOne("Core.Domain.Tag", null)
@@ -319,11 +212,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ToursId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Domain.Shopping.ShoppingCart", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Core.Domain.Tour", b =>

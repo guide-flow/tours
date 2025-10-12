@@ -20,6 +20,8 @@ namespace Infrastructure.Database
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("tours");
 
+            modelBuilder.Entity<Tour>().Property(tour => tour.StatusChangeDate).IsRequired(false).HasDefaultValue(null);
+
             modelBuilder.Entity<Tour>()
                 .HasMany(t => t.Checkpoints)
                 .WithOne(c => c.Tour)
@@ -38,6 +40,8 @@ namespace Infrastructure.Database
             modelBuilder.Entity<TourPurchaseToken>()
                 .HasIndex(token => new { token.TourId, token.UserId })
                 .IsUnique();
+
+            modelBuilder.Entity<Tour>().Property(tour => tour.TransportDurations).HasColumnType("jsonb");
         }
     }
 }

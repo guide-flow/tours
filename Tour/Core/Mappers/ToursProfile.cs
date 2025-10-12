@@ -18,6 +18,7 @@ namespace Core.Mappers
             CreateMap<ShoppingCartItem, ShoppingCartItemDto>();
             CreateMap<ShoppingCart, ShoppingCartDto>().ReverseMap();
             CreateMap<TourPurchaseToken, TourPurchaseTokenDto>();
+            CreateMap<TransportDuration, TransportDurationDto>().ReverseMap();  
         }
     }
 }

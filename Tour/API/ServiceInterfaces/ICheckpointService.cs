@@ -14,5 +14,6 @@ namespace API.ServiceInterfaces
         Task<CheckpointDto> GetCheckpointById(int checkpointId);
         Task DeleteCheckpointAsync(int checkpointId);
         Task<CheckpointDto> UpdateAsync(CheckpointDto checkpointDto);
+
     }
 }
