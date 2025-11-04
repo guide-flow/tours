@@ -30,8 +30,8 @@ namespace Tour.Startup
                     };
                 });
 
-            services.AddAuthentication("HeaderAuth")
-                .AddScheme<AuthenticationSchemeOptions, HeaderAuthenticationHandler>("HeaderAuth", null);
+           /* services.AddAuthentication("HeaderAuth")
+                .AddScheme<AuthenticationSchemeOptions, HeaderAuthenticationHandler>("HeaderAuth", null);*/
 
             services.AddAuthorization(options =>
             {

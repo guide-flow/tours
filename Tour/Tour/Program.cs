@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Tour.ProtoControllers;
 using NATS.Client;
+using Prometheus;
 using Tour.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,6 +80,9 @@ app.MapGrpcService<TourProtoController>();
 app.MapGrpcService<ShoppingCartProtoController>();
 
 app.ApplyMigrations();
+
+app.UseHttpMetrics();
+app.MapMetrics();
 
 app.MapGet("/health", () => Results.Ok("OK"));
 
