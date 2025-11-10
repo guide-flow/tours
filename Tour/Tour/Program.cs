@@ -7,6 +7,9 @@ using NATS.Client;
 using Prometheus;
 using Tour.Startup;
 
+// Enable HTTP/2 without TLS for gRPC (required for non-HTTPS gRPC)
+AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -33,11 +36,16 @@ builder.WebHost.ConfigureKestrel(options =>
     {
         listen.Protocols = HttpProtocols.Http1AndHttp2;
     });
-    options.ListenAnyIP(httpsPort, listen =>
+
+    // Only configure HTTPS if certificate path is provided
+    if (!string.IsNullOrEmpty(certPath) && !string.IsNullOrEmpty(certPassword))
     {
-        listen.UseHttps(certPath, certPassword);
-        listen.Protocols = HttpProtocols.Http1AndHttp2;
-    });
+        options.ListenAnyIP(httpsPort, listen =>
+        {
+            listen.UseHttps(certPath, certPassword);
+            listen.Protocols = HttpProtocols.Http1AndHttp2;
+        });
+    }
 });
 
 builder.Services.ConfigureAuth(builder.Configuration);
