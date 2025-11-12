@@ -35,7 +35,7 @@ namespace Tour.Controllers
             return Ok(createdCheckpoint);
         }
 
-        [Authorize(Policy = "authorPolicy")]
+        [Authorize]
         [HttpGet("tour-checkpoints/{tourId:int}")]
         public async Task<IActionResult> GetTourCheckpoints(int tourId)
         {
@@ -43,7 +43,7 @@ namespace Tour.Controllers
             return Ok(checkpoints);
         }
 
-        [Authorize(Policy = "authorPolicy")]
+        [Authorize]
         [HttpGet("checkpoint/{checkpointId:int}")]
         public async Task<IActionResult> GetCheckpoint(int checkpointId)
         {

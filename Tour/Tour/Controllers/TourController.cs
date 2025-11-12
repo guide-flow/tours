@@ -29,7 +29,7 @@ namespace Tour.Controllers
             return Ok(createdTour);
         }
 
-        [Authorize(Policy = "authorPolicy")]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTourById(int id)
         {
