@@ -62,6 +62,33 @@ namespace Tour.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("by-authors")]
+        public async Task<IActionResult> GetToursByAuthors([FromBody] List<string> authorIds)
+        {
+            try
+            {
+                if (authorIds == null || !authorIds.Any())
+                {
+                    return Ok(new List<TourDto>());
+                }
+
+                var allTours = new List<TourDto>();
+
+                foreach (var authorId in authorIds)
+                {
+                    var tours = await _tourService.GetToursByAuthorAsync(authorId);
+                    allTours.AddRange(tours);
+                }
+
+                return Ok(allTours);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [Authorize(Policy = "authorPolicy")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTour(int id, [FromBody] TourDto tourDto)
